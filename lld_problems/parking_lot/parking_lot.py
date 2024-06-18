@@ -54,6 +54,7 @@ class TwoWheelerParkingSpot(ParkingSpot):
             self.vehicle = None
             self.isEmpty = True
             self.parking_id = None
+            print(f"vehicle at {self.parking_id} is freed ,last  vehicle {self.vehicle.vehicle_id}  ")
 
 class FourWheelerParkingSpot(ParkingSpot):
     def __init__(self):
@@ -73,6 +74,7 @@ class FourWheelerParkingSpot(ParkingSpot):
             self.vehicle = None
             self.isEmpty = True
             self.parking_id = None
+            print(f"vehicle at {self.parking_id} is freed ,last  vehicle {self.vehicle.vehicle_id}  ")
 
 
 class ParkingSpotManager(ABC): #abstract class to manage parking spots
@@ -113,9 +115,9 @@ class TwoWheelerParkingSpotManager(ParkingSpotManager): #abstract class to manag
         TwoWheelerParkingSpot().park(id,v)
 
     def remove_vehicle(self, v: Vehicle):
-        TwoWheelerParkingSpot().remove(id,v)
+        TwoWheelerParkingSpot().remove(v)
     def clear_parking_spot(self, v: Vehicle):
-        self.remove(v)
+        self.remove_vehicle(v)
 
 
 class FourWheelerParkingSpotManager(ParkingSpotManager):  # abstract class to manage parking spots
@@ -140,10 +142,10 @@ class FourWheelerParkingSpotManager(ParkingSpotManager):  # abstract class to ma
         FourWheelerParkingSpot().park(id,v)
 
     def remove_vehicle(self, v: Vehicle):
-        FourWheelerParkingSpot(v).remove(v)
+        FourWheelerParkingSpot().remove(v)
 
     def clear_parking_spot(self, v: Vehicle):
-        self.remove(v)
+        self.remove_vehicle(v)
 
 class ParkingSpotFactory:
     @staticmethod
@@ -159,6 +161,7 @@ class Ticket:
         self.entry_time = None
 
     def get_ticket(self): #get ticket
+        pass
 
 
 class Entrance():
@@ -178,8 +181,8 @@ class Exit():
         self.vehicle_obj: Vehicle = vehicle
         self.park_obj: ParkingSpotFactory = ParkingSpotFactory.get_psm(self.vehicle_obj)
 
-    def find_parking_spot(self):
-        self.park_obj.clear_parking_spot(self.vehicle_obj)
+    # def find_parking_spot(self):
+
 
     def cost_compute(self):
         if self.vehicle_obj.vehicle_type == 'two-wheeler':
@@ -188,7 +191,7 @@ class Exit():
             print("Cost to pe paid: ", 40)
 
     def remove_vehicle(self):
-        self.park_obj.remove(self.vehicle_obj)
+        self.park_obj.clear_parking_spot(self.vehicle_obj)
 
 
 
@@ -196,6 +199,11 @@ if __name__ == "__main__":
     l = [TwoWheeler("KA05LL1128"),FourWheeler("UP78GL7080"),TwoWheeler("KA45AK1128"),FourWheeler("UP78UL7780"),TwoWheeler("KA45AK1128"),FourWheeler("UP78UL7780")]
     for v in l:
         Entrance(v).find_parking_spot()
+    for v in l:
+        Exit(v).remove_vehicle()
+        Exit(v).cost_compute()
+
+
 
 
 
