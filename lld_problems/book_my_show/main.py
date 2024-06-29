@@ -1,6 +1,7 @@
 # Design a online movie booking app
 # Identify objects
 # Location,MovieTheatre,Screen,Seats,Movie,User,Booking,Payment
+# follow up - how to maintain concurrency
 from typing import List
 class Movie():
     def __init__(self, name, description,year,duration):
