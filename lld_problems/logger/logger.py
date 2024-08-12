@@ -1,10 +1,11 @@
-# Design a logger
+# Design a logger,ATM,Vending Machine
 # Using Chain Responsibility principle
 
 from abc import ABC, abstractmethod
 class Logger(ABC):
     def __init__(self, next_logger):
         self.logger  = next_logger
+
     @abstractmethod
     def log(self,log_level):
         if self.logger is not None:
