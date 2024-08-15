@@ -3,9 +3,11 @@
 #e.g like notfication service, subscribe service , cricbuzz, weather station
 
 from abc import ABC, abstractmethod
+from typing import List
 from observer_pattern_observer import Observer
+import time
 class WeatherObservable(ABC):
-    observer_list = []
+    observer_list: List[Observer] = []
     @abstractmethod
     def __init__(self):
         pass
@@ -26,10 +28,14 @@ class WeatherObservable(ABC):
     def setdata(self):
         pass
 
+    @abstractmethod
+    def getdata(self):
+        pass
+
 
 class Dooordarshan(WeatherObservable):
     def __init__(self):
-        pass
+        self.data = None
 
     def add(self,obj: Observer):
         self.observer_list.append(obj)
@@ -37,13 +43,17 @@ class Dooordarshan(WeatherObservable):
     def remove(self,obj: Observer):
         self.observer_list.remove(obj)
 
-    def notify(self,msg):
+    def notify(self):
         for observer in self.observer_list:
-            observer.update(msg)
+            observer.update()
 
-    def setdata(self,msg):
-        if msg :
-            self.notify(msg)
+    def setdata(self,val):
+        if val :
+            self.data = val
+            self.notify()
+    def getdata(self):
+        return self.data
+
 
 
 
@@ -54,7 +64,11 @@ def Controller():
     radioObserver = Radio(observable)
     observable.add(teleobserver)
     observable.add(radioObserver)
-    observable.setdata("Overcast weather conditons")
+    temp = 20
+    while(1):
+        observable.setdata(temp)
+        temp+=1
+        time.sleep(10)
 
 if __name__ == '__main__':
     Controller()

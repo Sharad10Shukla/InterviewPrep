@@ -21,8 +21,8 @@ class Television(Observer):
         self.observable = observable
 
 
-    def update(self,msg) -> None:
-        print("Television Event notified with message: {}".format(msg))
+    def update(self) -> None:
+        print("Television Event notified with message: {}".format(self.observable.getdata()))
 
 class Radio(Observer):
     from observer_pattern_observable import WeatherObservable
@@ -30,8 +30,8 @@ class Radio(Observer):
     def __init__(self,observable: WeatherObservable):
         self.observable = observable
 
-    def update(self,msg) -> None:
-        print("radio Event notified with message: {}".format(msg))
+    def update(self) -> None:
+        print("radio Event notified with message: {}".format(self.observable.getdata()))
 
 
 
