@@ -6,7 +6,7 @@
 # - Exit
 from abc import ABC, abstractmethod
 from typing import List
-import time
+from datetime import datetime
 
 class Vehicle(ABC):
     def __init__(self):
@@ -133,8 +133,8 @@ class TwoWheelerParkingSpotManager(ParkingSpotManager): #abstract class to manag
             return parking_spot_list[0]
 
 
-    def park_vehicle(self,  v: Vehicle):
-        parking_spot_obj = self.find_parking_spot()
+    def park_vehicle(self,  v: Vehicle,parking_spot_obj: ParkingSpot):
+        # parking_spot_obj = self.find_parking_spot()
         parking_spot_obj.park(v)
 
     def remove_vehicle(self,parking_spot_obj:ParkingSpot):
@@ -184,13 +184,13 @@ class ParkingSpotFactory:
 class Ticket:
     def __init__(self,id,vehicle,parking_spot):
         self.ticket_id = id
-        self.entry_time = time.now()
+        self.entry_time = datetime.now()
         self.vehicle: Vehicle = vehicle
         self.parking_spot:ParkingSpot = parking_spot
 
 
     def get_ticket(self): #get ticket
-        pass
+        print(f"Ticket genrated for {self.parking_spot.parking_id}, {self.vehicle.vehicle_id} at {self.entry_time}")
 
 
 class Entrance():
@@ -200,10 +200,13 @@ class Entrance():
         self.park_obj: ParkingSpotFactory = ParkingSpotFactory.get_psm(self.vehicle_obj,parking_spot)
 
     def find_parking_spot(self):
-        self.park_obj.park_vehicle(self.vehicle_obj)
+
+        self.parking_spot = self.park_obj.find_parking_spot()
+        self.park_obj.park_vehicle(self.vehicle_obj,self.parking_spot)
 
 
     def genrate_ticket(self):
+        self.ticket_obj = Ticket(1,self.vehicle_obj,self.parking_spot)
         self.ticket_obj.get_ticket()
 
 class Exit():
@@ -234,10 +237,16 @@ if __name__ == "__main__":
     #     Exit(v).cost_compute()
 
     v  = TwoWheeler("KA05LL1128")
-    l = [TwoWheelerParkingSpot(1),TwoWheelerParkingSpot(2),TwoWheelerParkingSpot(3)]
-    Entrance(v,l).find_parking_spot()
-    Entrance(v,l).find_parking_spot()
-    Entrance(v, l).find_parking_spot()
+    v2 = TwoWheeler("KA05LL1129")
+    v3 = TwoWheeler("KA05LL1127")
+    l = [TwoWheelerParkingSpot(1),TwoWheelerParkingSpot(2)]
+    ob = Entrance(v,l)
+    ob.find_parking_spot()
+    ob.genrate_ticket()
+    ob2 = Entrance(v2,l)
+    ob2.find_parking_spot()
+    ob2.genrate_ticket()
+    # Entrance(v3, l).find_parking_spot()
     # Entrance(v, l).find_parking_spot()
 
 
